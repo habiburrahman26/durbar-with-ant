@@ -1,0 +1,26 @@
+.subscription {
+  max-width: 700px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 10px;
+}
+
+.package {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #1f2937;
+  border-radius: 4px;
+}
+
+.center {
+  text-align: center;
+}
+
+.title {
+  margin: 0 !important;
+  color: #f0f0f0 !important;
+}
