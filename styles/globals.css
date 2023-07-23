@@ -4,3 +4,31 @@
   box-sizing: border-box;
 }
 
+.home-slider {
+  padding: 0 20px;
+}
+
+.home-slider .slick-list {
+  padding: 70px 0 !important;
+  height: 100% !important;
+}
+
+.home-slider .slick-slide > div > img {
+  border-radius: 5px;
+}
+
+.home-slider .active-slide {
+  opacity: 1;
+  z-index: 100;
+  transform: scale(1.32, 1.2);
+  transition: all 0.3s;
+}
+
+.home-slider .inactive-slide {
+  position: relative;
+  opacity: 0.5;
+  transform: scale(0.9);
+  transition: all 0.3s;
+  z-index: -20;
+}
+

@@ -1,7 +1,9 @@
-import { SubscriptionPackageType } from '@/types/common';
-import Head from 'next/head';
-import { Button, Space, Typography } from 'antd';
-import styles from '@/styles/subscription.module.css';
+import { SubscriptionPackageType } from "@/types/common";
+import Head from "next/head";
+import { Button, Space, Typography } from "antd";
+import styles from "@/styles/subscription.module.css";
+import { ReactElement } from "react";
+import { RootLayout } from "@/layout/RootLayout";
 
 type PropsType = {
   subscriptionPackages: SubscriptionPackageType[];
@@ -9,21 +11,15 @@ type PropsType = {
 
 const { Title, Text } = Typography;
 
-const subscription = ({ subscriptionPackages }: PropsType) => {
+const Subscription = ({ subscriptionPackages }: PropsType) => {
   return (
-    <div>
+    <section style={{ paddingTop: "20px" }}>
       <Head>
         <title>Subscription - Durbar OTT</title>
       </Head>
-      <div>
-        <div className={styles.center}>
-          <Title
-            level={4}
-          >
-            Buy Durbar Premium
-          </Title>
-          <Text>Unlimited movies, dramas, and more.</Text>
-        </div>
+      <div className={styles.center}>
+        <Title level={4}>Buy Durbar Premium</Title>
+        <Text>Unlimited movies, dramas, and more.</Text>
       </div>
       <div className={styles.subscription}>
         {subscriptionPackages?.map((p) => (
@@ -40,15 +36,15 @@ const subscription = ({ subscriptionPackages }: PropsType) => {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
-export default subscription;
+export default Subscription;
 
 export async function getStaticProps() {
   const res = await fetch(
-    'https://ott.durbar.live/api/v1/web/available-subscription-plans'
+    "https://ott.durbar.live/api/v1/web/available-subscription-plans"
   );
   const data = await res.json();
 
@@ -58,3 +54,7 @@ export async function getStaticProps() {
     },
   };
 }
+
+Subscription.getLayout = function getLayout(page: ReactElement) {
+  return <RootLayout>{page}</RootLayout>;
+};

@@ -1,0 +1,13 @@
+.section {
+  padding: 10px 16px;
+}
+
+.description,
+.category {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.category{
+  color: #936DE3;
+}
