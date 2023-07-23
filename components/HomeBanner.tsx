@@ -24,7 +24,7 @@ const HomeBanner = ({ slider }: PropsType) => {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
-    autoplay: false,
+    autoplay: true,
     centerMode: true,
     adaptiveHeight: true,
     centerPadding: "0px",

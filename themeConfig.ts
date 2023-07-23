@@ -5,9 +5,9 @@ const theme: ThemeConfig = {
     colorPrimary: "#936DE3",
     borderRadius: 4,
   },
-  components:{
+  components: {
     
-  }
+  },
 };
 
 export default theme;
