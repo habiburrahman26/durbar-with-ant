@@ -1,18 +1,20 @@
-import { CategoryType } from '@/types/common';
-import Link from 'next/link';
-import styles from '@/styles/navbar.module.css';
-import { Typography, Space, Button, Tooltip } from 'antd';
-import { CrownFilled, SearchOutlined } from '@ant-design/icons';
-import { useState,useEffect } from 'react';
+import { CategoryType } from "@/types/common";
+import Link from "next/link";
+import styles from "@/styles/navbar.module.css";
+import { Typography, Space, Button, Tooltip } from "antd";
+import { CrownFilled, SearchOutlined } from "@ant-design/icons";
+import { useState, useEffect } from "react";
+import useAuth from "@/hooks/useAuth";
 
 const { Text } = Typography;
 
 const Navbar = () => {
   const [category, setCategory] = useState<CategoryType[]>([]);
+  const isAuth = useAuth();
 
   useEffect(() => {
     const fetchCategory = async () => {
-      const res = await fetch('https://ott.durbar.live/api/v1/web/category');
+      const res = await fetch("https://ott.durbar.live/api/v1/web/category");
       const category = await res.json();
       setCategory(category.data);
     };
@@ -23,7 +25,7 @@ const Navbar = () => {
   return (
     <nav className={styles.nav}>
       <div className={styles.flex}>
-        <Link href="/" className={styles['nav-logo']}>
+        <Link href="/" className={styles["nav-logo"]}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="70"
@@ -60,11 +62,20 @@ const Navbar = () => {
             <Link
               key={c.id}
               href={c.slug}
-              style={{ color: '#f0f0f0', fontSize: '16px' }}
+              style={{ color: "#f0f0f0", fontSize: "16px" }}
             >
               {c.title}
             </Link>
           ))}
+
+          {isAuth && (
+            <Link
+              href="/my-list"
+              style={{ color: "#f0f0f0", fontSize: "16px" }}
+            >
+              My List
+            </Link>
+          )}
         </Space>
       </div>
       <Space size={10}>
@@ -73,7 +84,7 @@ const Navbar = () => {
             type="text"
             size="large"
             icon={<SearchOutlined />}
-            className={styles['search-icon']}
+            className={styles["search-icon"]}
           ></Button>
         </Tooltip>
         <Link href="/subscription">
@@ -86,12 +97,28 @@ const Navbar = () => {
             Subscribe
           </Button>
         </Link>
-        <Button
-          style={{ background: '#936DE3', border: 'none', color: '#fff' }}
-          className={styles.button}
-        >
-          Login
-        </Button>
+        {!isAuth ? (
+          <Link href="/login">
+            <Button
+              style={{ background: "#936DE3", border: "none", color: "#fff" }}
+              className={styles.button}
+            >
+              Login
+            </Button>
+          </Link>
+        ) : (
+          <Button
+            type="primary"
+            danger
+            className={styles.button}
+            onClick={() => {
+              localStorage.clear();
+              window.location.href = "/";
+            }}
+          >
+            Logout
+          </Button>
+        )}
       </Space>
     </nav>
   );
