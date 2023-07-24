@@ -15,8 +15,8 @@ const HomeMovieSlider = ({ movieData }: PropsType) => {
     arrows: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 7,
-    slidesToScroll: 7,
+    slidesToShow: 6,
+    slidesToScroll: 6,
     className: "movie-slider",
   };
 
@@ -27,12 +27,12 @@ const HomeMovieSlider = ({ movieData }: PropsType) => {
           <Link
             href={`/watch/${m?.ott_content?.uuid}`}
             key={m.id}
-            style={{ textDecoration: "none" }}
+            className={styles.link}
           >
             <Image
               src={m.ott_content.poster}
               alt={m.ott_content.title}
-              width={260}
+              width={240}
               height={400}
               className={styles.image}
             />

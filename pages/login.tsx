@@ -1,94 +1,50 @@
-import { Button, Input, InputRef, Space, Typography } from "antd";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { FormEvent } from "react";
+import { Button, Input, InputRef, Row, Space, Typography } from 'antd';
+import { useRouter } from 'next/router';
+import { ChangeEvent, useState } from 'react';
+import { FormEvent } from 'react';
+import { signIn, signOut } from 'next-auth/react';
 
 const Login = () => {
   const router = useRouter();
-  const [isPhoneRegistered, setIsPhoneRegistered] = useState<boolean>(false);
-
-  const register = async (phone: FormData) => {
-    const res = await fetch(
-      "https://ott.durbar.live/api/v1/web/phone-register",
-      {
-        method: "POST",
-        body: phone,
-      }
-    );
-
-    const data = await res.json();
-    if (data.status) {
-      setIsPhoneRegistered(true);
-    }
-  };
-
-  const otpVerify = async (formData: FormData) => {
-    const res = await fetch("https://ott.durbar.live/api/v1/web/otp-verify", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await res.json();
-
-    if (data?.data?.access_token) {
-      localStorage.setItem("token", data?.data?.access_token);
-      router.replace("/");
-    }
-  };
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("phone", "01713443743");
-    await register(formData);
-  };
+    const result = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+    });
 
-  const handleOtp = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("phone", "01713443743");
-    formData.append("otp", "123456");
-    formData.append("device_name", "windows 101 432434");
-    formData.append("deviceuniqueid", "1234");
-
-    await otpVerify(formData);
+    if (result?.status === 200) {
+      router.replace('/');
+    }
   };
 
   return (
-    <div style={{ maxWidth: "500px", margin: "0 auto" }}>
-      {!isPhoneRegistered ? (
-        <form onSubmit={submitHandler}>
-          <Typography.Title level={3}>Register your phone</Typography.Title>
-          <Input placeholder="Enter your phone number" />
-          <Button
-            htmlType="submit"
-            type="primary"
-            style={{ marginTop: "10px" }}
-          >
+    <div style={{ maxWidth: '500px', margin: '0 auto' }}>
+      <form onSubmit={submitHandler} autoComplete="on">
+        <Row gutter={[8, 8]}>
+          <Typography.Title level={3}>Login</Typography.Title>
+
+          <Input
+            placeholder="Enter your email"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setEmail(e.target.value)
+            }
+          />
+          <Input.Password
+            placeholder="Enter your password"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setPassword(e.target.value)
+            }
+          />
+          <Button htmlType="submit" type="primary">
             Submit
           </Button>
-        </form>
-      ) : (
-        <form onSubmit={handleOtp}>
-          <Typography.Title level={3}>Verify OTP</Typography.Title>
-          <Space>
-            <Input />
-            <Input />
-            <Input />
-            <Input />
-            <Input />
-            <Input />
-          </Space>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{ marginTop: "10px" }}
-          >
-            Verify
-          </Button>
-        </form>
-      )}
+        </Row>
+      </form>
     </div>
   );
 };

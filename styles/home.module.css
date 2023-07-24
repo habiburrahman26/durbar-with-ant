@@ -15,3 +15,10 @@
 .image{
   border-radius: 5px;
 }
+
+.link:link,
+.link:active{
+  text-decoration: none;
+  display: block;
+  width: 100%;
+}
